@@ -69,7 +69,7 @@ vmap s <Plug>EasyjumpJump;
 The destination character you type is compared against visible buffer text. To make the search case sensitive (case), insensitive (icase), or smart case (smart) put the following in `.vimrc`.
 
 ```
-g:easyjump_case = 'smart' # Can be 'case', 'icase', or 'smart'.
+g:easyjump_case = 'smart' # Can be 'case', 'icase', or 'smart' (default).
 ```
 
 ### Highlight
