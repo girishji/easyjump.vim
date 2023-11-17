@@ -4,7 +4,7 @@ Jump to any location by typing 2 characters.
 
 - Mapped to `,` but any other trigger (like `s`) would work.
 - Vim idioms supported. Use `d,xy` to delete, `c,xy` to change, `v,xy` to select visually, etc.
-- Jump list (`:jumps`) updated so that you can jump back using _<ctrl-o>_.
+- Jump list (`:jumps`) updated so that you can jump back using `<ctrl-o>`.
 - Does not alter the buffer. Uses virtual text. Written in vim9 script.
 - Does not block the character you are trying to jump to.
 
