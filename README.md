@@ -22,7 +22,7 @@ Type `<esc>` to cancel the jump.
 
 **What if there is no letter next to where you want to jump to?**
 
-This happens when there are not enough available letters. Simply type `<Tab>` (or `,` again, or `;`) and you'll see letters appear in remaining locations. This should be rare.
+This happens when there are not enough available unique letters. Simply type `<Tab>` (or `,` again, or `;`) and you'll see letters appear in remaining locations. This should be rare.
 
 
 # Requirements
