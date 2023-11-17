@@ -8,12 +8,12 @@ Jump to any location by typing 2 characters.
 - Does not alter the buffer. Uses virtual text. Written in vim9 script.
 - Does not block the character you are trying to jump to.
 
-**Jump (ex. `,cd`)**: Type `,` and `c` (say) and you'll see new letters (virtual text) appear next to all the occurances of `c`. Type `d` (for instance) and cursor jumps to `c` next to `d`.
+**Jump (ex. `,cd`)**: Type `,` and `c` (say) and you'll see new letters (virtual text) appear next to all the occurrences of `c`. Type `d` (for instance) and cursor jumps to `c` next to `d`.
 
 <img src='img/img1.jpeg' width='700'>
 
 
-**Visual Select (ex. `v,cd`)**: To visually select a block of text starting from cursor position to some occurance of `c` type `v,c` and then type the highlighted character (say `d`).
+**Visual Select (ex. `v,cd`)**: To visually select a block of text starting from cursor position to some occurrence of `c` type `v,c` and then type the highlighted character (say `d`).
 
 <img src='img/img2.jpeg' width='700'>
 
@@ -83,6 +83,3 @@ The virtual text letters that appear next to the destination you want to jump to
 ```
 g:easyjump_letters = 'asdfgwercvhjkluiopynmbtqxzASDFGWERCVHJKLUIOPYNMBTQXZ0123456789'
 ```
-     
-
-
