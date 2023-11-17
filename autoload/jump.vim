@@ -5,6 +5,7 @@ var locations: list<list<number>> = [] # A list of positions to jump to
 var letters: list<any>
 var easyjump_case: string
 
+
 export def Setup()
     easyjump_case = get(g:, 'easyjump_case', 'smart') # case/icase/smart
     letters = get(g:, 'easyjump_letters', '')->split('\zs')
@@ -21,6 +22,7 @@ export def Setup()
         :vmap , <Plug>EasyjumpJump;
     endif
 enddef
+
 
 # gather locations to jump to, starting from cursor position and searching outwards
 def GatherLocations()
@@ -99,6 +101,7 @@ def Prioritize()
     endif
 enddef
 
+
 def ShowLocations(group: number)
     prop_type_delete(propname)
     prop_type_add(propname, {highlight: 'EasyJump', override: true, priority: 11})
@@ -117,6 +120,7 @@ def ShowLocations(group: number)
     endtry
 enddef
 
+
 def JumpTo(tgt: string, group: number)
     var jumpto = letters->index(tgt)
     if jumpto != -1
@@ -128,6 +132,7 @@ def JumpTo(tgt: string, group: number)
         :normal! m'
     endif
 enddef
+
 
 # main entry point
 export def Jump()
