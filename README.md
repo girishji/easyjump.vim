@@ -74,7 +74,7 @@ g:easyjump_case = 'smart' # Can be 'case', 'icase', or 'smart'.
 
 ### Highlight
 
-The virtual text that appears next to destination locations uses highlighted group `EasyJump`. It is linked to `MatchParen` by default. Set this appropriately to change colors.
+The virtual text that appears next to destination locations uses highlighted group `EasyJump`. It is linked to `MatchParen` by default. Set this group using `:highlight` command to change colors.
 
 ### Letters
 
