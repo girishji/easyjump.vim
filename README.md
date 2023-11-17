@@ -8,7 +8,7 @@ Jump to any location by typing 2 characters.
 - Does not alter the buffer. Uses virtual text. Written in vim9 script.
 - Does not block the character you are trying to jump to.
 
-Type `,` and `x` and you'll see new destination appear next to all the occurances of `x`. Type `y` (for instance) and cursor jumps to `x` next to the (virtual text) `y`. Trigger - Target - Choose.
+Type `,` and `x` and you'll see new letters (virtual text) appear next to all the occurances of `x`. Type `y` (for instance) and cursor jumps to `x` next to `y`.
 
 
 
