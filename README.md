@@ -15,6 +15,9 @@ Type `,` and `x` and you'll see new letters (virtual text) appear next to all th
 To visually select a block of text starting from cursor position to some occurance of `x` type `v,x` and then type the highlighted character (say 'z').
 
 
+Type `<esc>` to cancel the jump.
+
+
 **What if there is no letter next to where I want to jump to?**
 
 This happens when there are not enough available letters. Simply type `<Tab>` (or `,` again, or `;`) and you'll see letters appear in remaining locations. This should be rare.
