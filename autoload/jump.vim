@@ -4,6 +4,8 @@ var propname = 'EasyJump'
 var locations: list<list<number>> = [] # A list of positions to jump to
 var letters: list<any>
 var easyjump_case: string
+var lstart: number
+var lend: number
 
 export def Setup()
     easyjump_case = get(g:, 'easyjump_case', 'smart') # case/icase/smart
@@ -24,7 +26,6 @@ enddef
 
 # gather locations to jump to, starting from cursor position and searching outwards
 def GatherLocations()
-    var [lstart, lend] = [line('w0'), line('w$')]
     var curpos = getcurpos()
     var ch = easyjump_case ==? 'icase' ? getcharstr()->tolower() : getcharstr()
     var ignorecase = (easyjump_case ==? 'icase' || (easyjump_case ==? 'smart' && ch =~ '\U')) ? true : false
@@ -59,7 +60,6 @@ enddef
 def Prioritize()
     var highpri = []
     var lowpri = []
-    var [lstart, lend] = [line('w0'), line('w$')]
     var expected = locations->len()
     def FilterLocations(tlinenr: number, tmax: number)
         if tlinenr < lstart || tlinenr > lend
@@ -130,6 +130,7 @@ enddef
 
 # main entry point
 export def Jump()
+    var [lstart, lend] = [line('w0'), line('w$')] # Cache this since visible lines can change after jump
     GatherLocations()
     var ngroups = locations->len() / letters->len() + 1
     var group = 0
@@ -155,7 +156,6 @@ export def Jump()
         endif
     finally
         if !prop_type_get(propname)->empty()
-            var [lstart, lend] = [line('w0'), line('w$')]
             while prop_remove({type: propname}, lstart, lend) > 0
             endwhile
         endif
