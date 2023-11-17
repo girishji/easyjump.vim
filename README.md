@@ -10,11 +10,12 @@ Jump to any location by typing 2 characters.
 
 Type `,` and `c` (say) and you'll see new letters (virtual text) appear next to all the occurances of `c`. Type `d` (for instance) and cursor jumps to `c` next to `d`.
 
-![](img/img1.jpeg)
+<img src='img/img1.jpeg' width='700'>
+
 
 To visually select a block of text starting from cursor position to some occurance of `c` type `v,c` and then type the highlighted character (say 'd').
 
-<img src='img/img2.jpeg' width='600'>
+<img src='img/img2.jpeg' width='700'>
 
 Type `<esc>` to cancel the jump.
 
