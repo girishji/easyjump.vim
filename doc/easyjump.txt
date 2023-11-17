@@ -1,4 +1,4 @@
-easyjump.txt*		Vim jump on speed
+*easyjump.txt*		Vim motion on steroids
 
 Author: Girish Palya (girishji AT gmail DOT com)
 For Vim version 9.0 and above
