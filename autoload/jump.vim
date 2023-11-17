@@ -130,7 +130,7 @@ enddef
 
 # main entry point
 export def Jump()
-    var [lstart, lend] = [line('w0'), line('w$')] # Cache this since visible lines can change after jump
+    [lstart, lend] = [line('w0'), line('w$')] # Cache this since visible lines can change after jump
     GatherLocations()
     var ngroups = locations->len() / letters->len() + 1
     var group = 0
