@@ -13,7 +13,7 @@ Jump to any location by typing 2 characters.
 <img src='img/img1.jpeg' width='700'>
 
 
-**Visual Select (ex. `v,cd`)**: To visually select a block of text starting from cursor position to some occurance of `c` type `v,c` and then type the highlighted character (say 'd').
+**Visual Select (ex. `v,cd`)**: To visually select a block of text starting from cursor position to some occurance of `c` type `v,c` and then type the highlighted character (say `d`).
 
 <img src='img/img2.jpeg' width='700'>
 
