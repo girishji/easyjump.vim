@@ -20,7 +20,7 @@ Jump to any location by typing 2 characters.
 Type `<esc>` to cancel the jump.
 
 
-**What if there is no letter next to where I want to jump to?**
+**What if there is no letter next to where you want to jump to?**
 
 This happens when there are not enough available letters. Simply type `<Tab>` (or `,` again, or `;`) and you'll see letters appear in remaining locations. This should be rare.
 
