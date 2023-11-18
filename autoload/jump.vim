@@ -1,11 +1,10 @@
 vim9script
 
 var propname = 'EasyJump'
-var locations: list<list<number>> = [] # A list of positions to jump to
+var locations: list<list<number>> = [] # A list of {line nr, column nr} to jump to
 var letters: list<any>
 var easyjump_case: string
-var lstart: number
-var lend: number
+var [lstart, lend] = [0, 0]
 
 export def Setup()
     easyjump_case = get(g:, 'easyjump_case', 'smart') # case/icase/smart
@@ -45,15 +44,16 @@ def GatherLocations()
     for lnum in linenrs
         var line = Ignorecase(getline(lnum))
         var cnum = line->stridx(ch)
-        while cnum != -1 && ([lnum, cnum + 1] != [curpos[1], curpos[2]])
+        while cnum != -1
             if ch == ' ' && !locations->empty() && locations[-1] == [lnum, cnum]
                 locations[-1][1] = cnum + 1
-            else
+            elseif [lnum, cnum + 1] != [curpos[1], curpos[2]]
                 locations->add([lnum, cnum + 1])
             endif
             cnum = line->stridx(ch, cnum + 1)
         endwhile
     endfor
+    echom locations
 enddef
 
 # order locations list by keeping more locations near cursor, and at least one per line

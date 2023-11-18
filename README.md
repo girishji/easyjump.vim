@@ -12,18 +12,32 @@ Jump to any location by typing 2 characters.
 
 <img src='img/img1.jpeg' width='700'>
 
+**Jump back**: Type `<c-o>` (control-O). Jump forward with `<tab>` or `<c-i>'.
 
-**Visual Select (ex. `v,cd`)**: To visually select a block of text starting from cursor position to some occurrence of `c` type `v,c` and then type the highlighted character (say `d`).
+**Visual Select (ex. `v,cd`)**: To visually select a block of text starting
+from cursor position to some occurrence of `c` type `v,c` and then type the
+highlighted character (say `d`).
 
 <img src='img/img2.jpeg' width='700'>
 
-Type `<esc>` to cancel the jump.
+**Operator Pending**: `d,xy` to delete, `c,xy` to change text.
 
+Type `<esc>` to **cancel** the jump.
+
+Above illustrations use `:colorscheme quiet`.
 
 **What if there is no letter next to where you want to jump to?**
 
-This happens when there are not enough available unique letters. Simply type `<Tab>` (or `,` again, or `;`) and you'll see letters appear in remaining locations. This should be rare.
+This happens when there are not enough available unique letters. Simply type
+`<Tab>` (or `,` again, or `;`) and you'll see letters appear in remaining
+locations. This should be rare.
 
+**Motivation:** For a long time I have used relative numbers with `j`/`k` along
+with `f`/`t` commands to jump. But I always found it distracting to shift focus to the left to
+look up the line number. This plugin helps you keep your eyes on the
+target character you want to jump to. I think this is the missing motion in
+Vim. I still use `f` and `t` when seeking within the same line since it is the most
+efficient.
 
 # Requirements
 
