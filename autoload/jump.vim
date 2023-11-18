@@ -121,10 +121,9 @@ def JumpTo(tgt: string, group: number)
     if jumpto != -1
         var idx = group * letters->len() + jumpto
         if idx < locations->len()
+            :normal! m'
             cursor(locations[idx])
         endif
-        # add to jumplist (:jumps)
-        :normal! m'
     endif
 enddef
 
