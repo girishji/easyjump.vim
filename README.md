@@ -8,19 +8,19 @@ Jump to any location by typing 2 characters.
 - Does not alter the buffer. Uses virtual text. Written in vim9 script.
 - Does not block the character you are trying to jump to.
 
-**Jump (ex. `,cd`)**: Type `,` and `c` (say) and you'll see new letters (virtual text) appear next to all the occurrences of `c`. Type `d` (for instance) and cursor jumps to `c` next to `d`.
+🚀 **Jump (ex. `,cd`)**: Type `,` and `c` (say) and you'll see new letters (virtual text) appear next to all the occurrences of `c`. Type `d` (for instance) and cursor jumps to `c` next to `d`.
 
 <img src='img/img1.jpeg' width='700'>
 
-**Jump back**: Type `<c-o>` (control-O). Jump forward with `<tab>` or `<c-i>'.
+🚀 **Jump back**: Type `<c-o>` (control-O). Jump forward with `<tab>` or `<c-i>'.
 
-**Visual Select (ex. `v,cd`)**: To visually select a block of text starting
+🚀 **Visual Select (ex. `v,cd`)**: To visually select a block of text starting
 from cursor position to some occurrence of `c` type `v,c` and then type the
 highlighted character (say `d`).
 
 <img src='img/img2.jpeg' width='700'>
 
-**Operator Pending**: `d,xy` to delete, `c,xy` to change text.
+🚀 **Operator Pending**: `d,xy` to delete, `c,xy` to change text.
 
 Type `<esc>` to **cancel** the jump.
 
