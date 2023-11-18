@@ -29,7 +29,7 @@ Above illustrations use `:colorscheme quiet`.
 **What if there is no letter next to where you want to jump to?**
 
 This happens when there are not enough available unique letters. Simply type
-`<Tab>` (or `,` again, or `;`) and you'll see letters appear in remaining
+`<Tab>` (or `,`, or `;`) and you'll see letters appear in remaining
 locations. This should be rare.
 
 **Motivation:** For a long time I have used relative numbers with `j`/`k` along
@@ -68,11 +68,16 @@ Or use Vim's builtin package manager.
 
 ### Trigger Key
 
-Default trigger key is `,`. To change this to `s` (for example) put the following in `.vimrc` file.
+Disable default keybinding. `,` key will no longer be bound.
 
 ```
-vim9script
 g:easyjump_default_keymap = false
+```
+
+To make `s` (for example) trigger the jump put the
+following in `.vimrc` file.
+
+```
 nmap s <Plug>EasyjumpJump;
 omap s <Plug>EasyjumpJump;
 vmap s <Plug>EasyjumpJump;
