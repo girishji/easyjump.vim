@@ -92,7 +92,7 @@ The virtual text that appears next to destination locations uses highlighted gro
 
 ### Letters
 
-The virtual text letters that appear next to the destination you want to jump to are prioritized based on distance from the cursor, with at least one letter per line. The letters appear in the following order of decreasing priority. The letters and order can be changed by assigning to the following variable.
+Jump locations are prioritized based on the distance from the cursor. Virtual text letters are placed in this order, with at least one letter per line. The order of letters can be changed by assigning to the following variable.
 
 ```
 g:easyjump_letters = 'asdfgwercvhjkluiopynmbtqxzASDFGWERCVHJKLUIOPYNMBTQXZ0123456789'
