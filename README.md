@@ -35,9 +35,7 @@ locations. This should be rare.
 **Motivation:** For a long time I have used relative numbers with `j`/`k` along
 with `f`/`t` commands to jump. But I always found it distracting to shift focus to the left to
 look up the line number. This plugin helps you keep your eyes on the
-target you want to jump to. I think this is the missing motion of
-Vim. I still use `f` and `t` when seeking within the same line since it is the most
-efficient.
+target you want to jump to. I think this is the missing motion of Vim.
 
 # Requirements
 
