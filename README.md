@@ -30,12 +30,15 @@ Above illustrations use `:colorscheme quiet`.
 
 This happens when there are not enough available unique letters. Simply type
 `<Tab>` (or `,`, or `;`) and you'll see letters appear in remaining
-locations. This should be rare.
+locations.
+
+One trick to simply hop quickly without choosing a character is to search for
+'space' character, like `, ` (`,` followed by `<space>`).
 
 **Motivation:** For a long time I have used relative numbers with `j`/`k` along
 with `f`/`t` commands to jump. But I always found it distracting to shift focus to the left to
 look up the line number. This plugin helps you keep your eyes on the
-target you want to jump to. I think this is the missing motion of Vim.
+target. I think this is the missing motion of Vim.
 
 # Requirements
 
