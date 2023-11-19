@@ -66,14 +66,15 @@ Or use Vim's builtin package manager.
 
 ### Trigger Key
 
-Disable default keybinding. `,` key will no longer be bound.
+By default `,` is the trigger key. To disable it put the following in `.vimrc`
+file. `,` will be restored to Vim original keybinding (`:h ,`).
 
 ```
 g:easyjump_default_keymap = false
 ```
 
-To make `s` (for example) trigger the jump put the
-following in `.vimrc` file.
+To make `s` trigger the jump put the following in `.vimrc` file. Any other key
+can also be used instead of `s`.
 
 ```
 nmap s <Plug>EasyjumpJump;
