@@ -2,13 +2,15 @@
 
 Jump to any location by typing 2 characters.
 
-- Mapped to `,` but any other trigger (like `s`) can be configured.
+- Mapped to `,` but any other trigger (like `s`) can be configured (see below).
 - Vim idioms supported. Use `d,xy` to delete, `c,xy` to change, `v,xy` to select visually, etc.
 - Jump list (`:jumps`) updated so that you can jump back using `<c-o>`.
 - Does not alter the buffer. Uses virtual text. Written in vim9 script.
 - Does not block the character you are trying to jump to.
 
-🚀 **Jump (ex. `,cd`)**: Type `,` and `c` (say) and you'll see new letters (virtual text) appear next to all the occurrences of `c`. Type `d` (for instance) and cursor jumps to `c` next to `d`.
+🚀 **Jump (ex. `,cd`)**: Type `,` and `c` (say) and you'll see new letters
+(virtual text) appear next to all the occurrences of `c`. Type `d` (for
+instance) and cursor jumps to the `c` next to `d`.
 
 <img src='img/img1.jpeg' width='700'>
 
