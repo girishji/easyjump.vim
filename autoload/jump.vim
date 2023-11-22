@@ -2,18 +2,19 @@ vim9script
 
 var propname = 'EasyJump'
 var locations: list<list<number>> = [] # A list of {line nr, column nr} to jump to
-var letters: list<any>
+var letters: string
+var tags: dict<any>
 var easyjump_case: string
 var [lstart, lend] = [0, 0]
 
 export def Setup()
     easyjump_case = get(g:, 'easyjump_case', 'smart') # case/icase/smart
-    letters = get(g:, 'easyjump_letters', '')->split('\zs')
+    letters = get(g:, 'easyjump_letters', '')
     if letters->empty()
         var alpha = 'asdfgwercvhjkluiopynmbtqxz'
-        letters = $'{alpha}{alpha->toupper()}0123456789'->split('\zs')
+        letters = $'{alpha}{alpha->toupper()}0123456789'
     endif
-    if letters->copy()->sort()->uniq()->len() != letters->len()
+    if letters->split('\zs')->sort()->uniq()->len() != letters->len()
         echoe 'EasyJump: Letters list has duplicates'
     endif
     if get(g:, 'easyjump_default_keymap', true) && !hasmapto('<Plug>EasyjumpJump;', 'n') && mapcheck(',', 'n') ==# ''
@@ -45,12 +46,13 @@ def GatherLocations()
         var line = Ignorecase(getline(lnum))
         var cnum = line->stridx(ch)
         while cnum != -1
-            if ch == ' ' && !locations->empty() && locations[-1] == [lnum, cnum]
-                locations[-1][1] = cnum + 1
-            elseif [lnum, cnum + 1] != [curpos[1], curpos[2]]
-                locations->add([lnum, cnum + 1])
+            cnum += 1 # column numbers start from 1
+            if ch == ' ' && !locations->empty() && locations[-1] == [lnum, cnum - 1]
+                locations[-1][1] = cnum
+            elseif [lnum, cnum] != [curpos[1], curpos[2]]
+                locations->add([lnum, cnum])
             endif
-            cnum = line->stridx(ch, cnum + 1)
+            cnum = line->stridx(ch, cnum)
         endwhile
     endfor
     echom locations
@@ -101,14 +103,31 @@ enddef
 def ShowLocations(group: number)
     prop_type_delete(propname)
     prop_type_add(propname, {highlight: 'EasyJump', override: true, priority: 11})
+    tags = {}
+    var tagged = {}
+    var ntags = letters->len()
     try
-        for idx in range(letters->len())
-            var tidx = group * letters->len() + idx
-            if tidx < locations->len()
-                var [lnum, cnum] = locations[tidx]
-                prop_add(lnum, cnum + 1, {type: propname, text: letters[idx]})
-            else
-                break
+        # try to put tag char that match next char
+        for idx in range(group * ntags, min([locations->len() - 1, (group * ntags) + ntags - 1]))
+            var [lnum, cnum] = locations[idx]
+            var line = getline(lnum)
+            if cnum < line->len()
+                var nextchar = line[cnum]
+                if !tags->has_key(nextchar) && letters->stridx(nextchar) != -1
+                    prop_add(lnum, cnum + 1, {type: propname, text: nextchar})
+                    tagged[$'{lnum}-{cnum}'] = 1
+                    tags[nextchar] = [lnum, cnum]
+                endif
+            endif
+        endfor
+        var remaining = letters->split('\zs')->filter((_, v) => !tags->has_key(v))
+        # allocate remaining letters
+        for idx in range(group * ntags, min([locations->len() - 1, (group * ntags) + ntags - 1]))
+            var [lnum, cnum] = locations[idx]
+            if !tagged->has_key($'{lnum}-{cnum}')
+                prop_add(lnum, cnum + 1, {type: propname, text: remaining[0]})
+                tags[remaining[0]] = [lnum, cnum]
+                remaining->remove(0) # pop
             endif
         endfor
     finally
@@ -117,13 +136,9 @@ def ShowLocations(group: number)
 enddef
 
 def JumpTo(tgt: string, group: number)
-    var jumpto = letters->index(tgt)
-    if jumpto != -1
-        var idx = group * letters->len() + jumpto
-        if idx < locations->len()
-            :normal! m'
-            cursor(locations[idx])
-        endif
+    if tags->has_key(tgt)
+        :normal! m'
+        cursor(tags[tgt])
     endif
 enddef
 
