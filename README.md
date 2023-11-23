@@ -7,21 +7,21 @@ Jump to any location by typing 2 characters.
 - Jump list (`:jumps`) updated so that you can jump back using `<c-o>`.
 - Does not alter the buffer. Written in vim9 script.
 
-🚀 **Jump (ex. `scd`)**: Type `s` and `c` (say) and you'll see new tags
-appear replacing to all the occurrences of `c`. Type `d` (for
-instance) and cursor jumps to the `c` under `d`.
+🚀 **Jump (ex. `s`)**: Type `s` and `c` (say) and you'll see new tags
+appear replacing to all the occurrences of `c`. Type `e` (for
+instance) and cursor jumps to the `c` under `e`.
 
 <img src='img/img1.jpeg' width='700'>
 
 🚀 **Jump back**: Type `<c-o>` (control-O). Jump forward with `<tab>` or `<c-i>'.
 
-🚀 **Visual Select (ex. `vscd`)**: To visually select a block of text starting
+🚀 **Visual Select (ex. `vs`)**: To visually select a block of text starting
 from cursor position to some occurrence of `c` type `vsc` and then type the
-highlighted character (say `d`).
+highlighted character (say `e`).
 
 <img src='img/img2.jpeg' width='700'>
 
-Similarly, `dsxy` to delete, `csxy` to change text.
+Similarly, `ds` to delete, `cs` to change text.
 
 Type `<esc>` to **cancel** the jump.
 
