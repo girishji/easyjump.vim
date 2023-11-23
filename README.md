@@ -3,7 +3,7 @@
 Jump to any location by typing 2 characters.
 
 - Mapped to `s` but any other trigger (like `,`) can be configured (see below).
-- Vim idioms supported. Use `dsxy` to delete, `csxy` to change, `vsxy` to select visually, etc.
+- Vim idioms supported. Use `ds` to delete, `cs` to change, `vs` to select visually, etc.
 - Jump list (`:jumps`) updated so that you can jump back using `<c-o>`.
 - Does not alter the buffer. Written in vim9 script.
 
