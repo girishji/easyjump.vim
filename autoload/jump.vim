@@ -41,6 +41,9 @@ def GatherLocations()
         endif
     endfor
     for lnum in linenrs
+        if foldclosed(lnum) != -1
+            continue # ignore folded lines
+        endif
         var line = Ignorecase(getline(lnum))
         var col = line->stridx(ch)
         while col != -1
