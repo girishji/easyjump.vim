@@ -82,10 +82,10 @@ omap , <Plug>EasyjumpJump;
 vmap , <Plug>EasyjumpJump;
 ```
 
-### Case
+### Case Sensitive
 
-To make the search case sensitive (case), insensitive (icase), or smart case
-(smart) put the following in `.vimrc`.
+To choose among case sensitive (case), insensitive (icase), and smart case
+(smart) for search put the following in `.vimrc`.
 
 ```
 g:easyjump_case = 'smart' # Can be 'case', 'icase', or 'smart' (default).
