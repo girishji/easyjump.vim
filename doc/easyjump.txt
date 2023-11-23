@@ -17,12 +17,12 @@ CONTENTS                                            *easyjump-contents*
 
 Jump to any location by typing 2 characters.
 
-Jump: Type `,` and `c` (say) and you'll see new letters (virtual text) appear
+Jump: Type `s` and `c` (say) and you'll see new letters (virtual text) appear
 next to all the occurrences of `c`. Type `d` (for instance) and cursor jumps to
 `c` next to `d`.
 
 Visual Select: To visually select a block of text starting from cursor position
-to some occurrence of `c` type `v,c` and then type the highlighted character
+to some occurrence of `c` type `vsc` and then type the highlighted character
 (say `d`).
 
 What if there is no letter next to where you want to jump to?~
@@ -34,8 +34,8 @@ locations. This should be rare.
 ==============================================================================
 2. Features					*easyjump-features*
 
-- Mapped to `,` but any other trigger (like `s`) would work.
-- Vim idioms supported. Use `d,xy` to delete, `c,xy` to change, `v,xy` to select visually, etc.
+- Mapped to `s` but any other trigger (like `,`) would work.
+- Vim idioms supported. Use `dsxy` to delete, `csxy` to change, `vsxy` to select visually, etc.
 - Jump list (`:jumps`) updated so that you can jump back using `<c-o>`.
 - Does not alter the buffer. Uses virtual text. Written in vim9 script.
 - Does not block the character you are trying to jump to.
@@ -77,16 +77,16 @@ file:
 
 Trigger Key~
 
-By default `,` is the trigger key. To disable it put the following in `.vimrc`
-file. `,` will be restored to Vim original keybinding (`:h ,`).
+By default `s` is the trigger key. To disable it put the following in `.vimrc`
+file. `s` will be restored to Vim original keybinding (`:h s`).
 >
 	g:easyjump_default_keymap = false
 
-To make `s` (for example) trigger the jump put the following in `.vimrc` file.
+To make `,` (for example) trigger the jump put the following in `.vimrc` file.
 >
-	nmap s <Plug>EasyjumpJump;
-	omap s <Plug>EasyjumpJump;
-	vmap s <Plug>EasyjumpJump;
+	nmap , <Plug>EasyjumpJump;
+	omap , <Plug>EasyjumpJump;
+	vmap , <Plug>EasyjumpJump;
 
 Case~
 

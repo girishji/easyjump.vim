@@ -2,7 +2,6 @@ vim9script
 
 var locations: list<list<number>> = [] # A list of {line nr, column nr} to jump to
 var letters: string
-var tags: dict<any>
 var easyjump_case: string
 
 export def Setup()
@@ -16,9 +15,9 @@ export def Setup()
         echoe 'EasyJump: Letters list has duplicates'
     endif
     if get(g:, 'easyjump_default_keymap', true) && !hasmapto('<Plug>EasyjumpJump;', 'n') && mapcheck(',', 'n') ==# ''
-        :nmap , <Plug>EasyjumpJump;
-        :omap , <Plug>EasyjumpJump;
-        :vmap , <Plug>EasyjumpJump;
+        :nmap s <Plug>EasyjumpJump;
+        :omap s <Plug>EasyjumpJump;
+        :vmap s <Plug>EasyjumpJump;
     endif
 enddef
 
@@ -54,7 +53,6 @@ def GatherLocations()
             col = line->stridx(ch, col)
         endwhile
     endfor
-    echom locations
 enddef
 
 # order locations list by keeping more locations near cursor, and at least one per line
@@ -100,14 +98,30 @@ def Prioritize()
     endif
 enddef
 
-def ShowTag(tag: string, lnum: number, col: number)
+# column number needs to be adjusted when:
+#   - screen column differs from column (ex. tab, non-ascii chars)
+#   - concealed text is present
+def VisualPos(lnum: number, col: number): list<number>
     var screenpos = win_getid()->screenpos(lnum, col)
     if screenpos == {row: 0, col: 0, endcol: 0, curscol: 0}
-        return
+        echoe "screenpos() error"
+        return [-1, -1]
     endif
-    popup_create(tag, {
-        line: screenpos.row,
-        col: screenpos.col,
+    var diff = 0
+    for c in range(1, col - 1)
+        var res = synconcealed(lnum, c)
+        if res[0]
+            diff += (1 - res[1]->len())
+        endif
+    endfor
+    return [screenpos.row, screenpos.col - diff]
+enddef
+
+def ShowTag(tag: string, lnum: number, col: number)
+    var [linenum, colnum] = VisualPos(lnum, col)
+    var id = popup_create(tag, {
+        line: linenum,
+        col: colnum,
         highlight: 'EasyJump',
         wrap: false,
         zindex: 50 - 1,
@@ -115,51 +129,27 @@ def ShowTag(tag: string, lnum: number, col: number)
 enddef
 
 def ShowLocations(group: number)
-    tags = {}
-    var tagged = {}
-    var ntags = letters->len()
-    # try to put tag char that match next char
-    for idx in range(group * ntags, min([locations->len() - 1, (group * ntags) + ntags - 1]))
-        var [lnum, col] = locations[idx]
-        var line = getline(lnum)
-        if col < line->len()
-            var nextchar = line[col]
-            if !tags->has_key(nextchar) && letters->stridx(nextchar) != -1
-                # ShowTag(nextchar, lnum, col + 1)
-                # prop_add(lnum, col + 1, {type: propname, text: nextchar})
-                # prop_add(lnum, col + 1, {type: 'EasyJump', bufnr: buf, length: 1})
-                tagged[$'{lnum}-{col}'] = 1
-                tags[nextchar] = [lnum, col]
-            endif
-        endif
-    endfor
-    var remaining = letters->split('\zs')->filter((_, v) => !tags->has_key(v))
-    # allocate remaining letters
-    for idx in range(group * ntags, min([locations->len() - 1, (group * ntags) + ntags - 1]))
-        var [lnum, col] = locations[idx]
-        if !tagged->has_key($'{lnum}-{col}')
-            # prop_add(lnum, col + 1, {type: propname, text: remaining[0]})
-            tags[remaining[0]] = [lnum, col]
-            remaining->remove(0) # pop
-        endif
-    endfor
     try
-        # InitTextProp()
-        for [tag, location] in tags->items()
-            var [lnum, col] = location
-            ShowTag(tag, lnum, col)
-            # prop_add(lnum, col + 1, {type: 'EasyJump', bufnr: buf, length: 1})
+        popup_clear()
+        var ntags = letters->len()
+        for idx in range(min([ntags, locations->len() - group * ntags]))
+            var [lnum, col] = locations[idx + group * ntags]
+            ShowTag(letters[idx], lnum, col)
         endfor
     finally
         :redraw
     endtry
 enddef
 
-def JumpTo(tgt: string)
-    if tags->has_key(tgt)
+def JumpTo(tgt: string, group: number)
+    var tagidx = letters->stridx(tgt)
+    var locidx = tagidx + group * letters->len()
+    if tagidx != -1 && locidx < locations->len()
+        var loc = locations[locidx]
         :normal! m'
-        cursor(tags[tgt])
+        cursor(loc)
     endif
+    popup_clear()
 enddef
 
 # main entry point
@@ -179,20 +169,15 @@ export def Jump()
                     group = (group + 1) % ngroups
                     ShowLocations(group)
                 else
-                    JumpTo(ch)
+                    JumpTo(ch, group)
                     break
                 endif
             endwhile
         else
             var ch = getcharstr()
-            JumpTo(ch)
+            JumpTo(ch, group)
         endif
     finally
         popup_clear()
-        # if !prop_type_get(propname)->empty()
-        #     while prop_remove({type: propname}, lstart, lend) > 0
-        #     endwhile
-        # endif
-        # # prop_type_delete(propname) # XXX Vim bug: 'J' after jump causes corruption
     endtry
 enddef
