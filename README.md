@@ -7,9 +7,8 @@ Jump to any location by typing 2 characters.
 - Jump list (`:jumps`) updated so that you can jump back using `<c-o>`.
 - Does not alter the buffer. Written in vim9 script.
 
-🚀 **Jump (ex. `s`)**: Type `s` and `c` (say) and you'll see new tags
-appear replacing to all the occurrences of `c`. Type `e` (for
-instance) and cursor jumps to the `c` under `e`.
+🚀 **Jump (ex. `s`)**: Type `s` and `c` (say) and you'll see new tag characters
+appear in place of `c`. Type `e` (for instance) and cursor jumps to the `c` under `e`.
 
 <img src='img/img1.jpeg' width='700'>
 
@@ -29,8 +28,8 @@ Above illustrations use `:colorscheme quiet`.
 
 **What if there is no letter next to where you want to jump to?**
 
-This happens when there are not enough available unique letters. Simply type
-`<Tab>` (or `,`, or `;`) and you'll see letters appear in remaining
+This happens when there are not enough available unique letters to tag. Simply type
+`<Tab>` (or `,`, or `;`) and you'll see tag letters appear in remaining
 locations.
 
 **Motivation:** For a long time I have used relative numbers with `j`/`k` along
