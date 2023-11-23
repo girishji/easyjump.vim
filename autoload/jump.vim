@@ -1,11 +1,9 @@
 vim9script
 
-var propname = 'EasyJump'
 var locations: list<list<number>> = [] # A list of {line nr, column nr} to jump to
 var letters: string
 var tags: dict<any>
 var easyjump_case: string
-var [lstart, lend] = [0, 0]
 
 export def Setup()
     easyjump_case = get(g:, 'easyjump_case', 'smart') # case/icase/smart
@@ -26,6 +24,7 @@ enddef
 
 # gather locations to jump to, starting from cursor position and searching outwards
 def GatherLocations()
+    var [lstart, lend] = [line('w0'), line('w$')]
     var curpos = getcurpos()
     var ch = easyjump_case ==? 'icase' ? getcharstr()->tolower() : getcharstr()
     var ignorecase = (easyjump_case ==? 'icase' || (easyjump_case ==? 'smart' && ch =~ '\U')) ? true : false
@@ -44,15 +43,15 @@ def GatherLocations()
     endfor
     for lnum in linenrs
         var line = Ignorecase(getline(lnum))
-        var cnum = line->stridx(ch)
-        while cnum != -1
-            cnum += 1 # column numbers start from 1
-            if ch == ' ' && !locations->empty() && locations[-1] == [lnum, cnum - 1]
-                locations[-1][1] = cnum
-            elseif [lnum, cnum] != [curpos[1], curpos[2]]
-                locations->add([lnum, cnum])
+        var col = line->stridx(ch)
+        while col != -1
+            col += 1 # column numbers start from 1
+            if ch == ' ' && !locations->empty() && locations[-1] == [lnum, col - 1]
+                locations[-1][1] = col
+            elseif [lnum, col] != [curpos[1], curpos[2]]
+                locations->add([lnum, col])
             endif
-            cnum = line->stridx(ch, cnum)
+            col = line->stridx(ch, col)
         endwhile
     endfor
     echom locations
@@ -60,6 +59,7 @@ enddef
 
 # order locations list by keeping more locations near cursor, and at least one per line
 def Prioritize()
+    var [lstart, lend] = [line('w0'), line('w$')]
     var highpri = []
     var lowpri = []
     var expected = locations->len()
@@ -100,42 +100,62 @@ def Prioritize()
     endif
 enddef
 
+def ShowTag(tag: string, lnum: number, col: number)
+    var screenpos = win_getid()->screenpos(lnum, col)
+    if screenpos == {row: 0, col: 0, endcol: 0, curscol: 0}
+        return
+    endif
+    popup_create(tag, {
+        line: screenpos.row,
+        col: screenpos.col,
+        highlight: 'EasyJump',
+        wrap: false,
+        zindex: 50 - 1,
+        })
+enddef
+
 def ShowLocations(group: number)
-    prop_type_delete(propname)
-    prop_type_add(propname, {highlight: 'EasyJump', override: true, priority: 11})
     tags = {}
     var tagged = {}
     var ntags = letters->len()
+    # try to put tag char that match next char
+    for idx in range(group * ntags, min([locations->len() - 1, (group * ntags) + ntags - 1]))
+        var [lnum, col] = locations[idx]
+        var line = getline(lnum)
+        if col < line->len()
+            var nextchar = line[col]
+            if !tags->has_key(nextchar) && letters->stridx(nextchar) != -1
+                # ShowTag(nextchar, lnum, col + 1)
+                # prop_add(lnum, col + 1, {type: propname, text: nextchar})
+                # prop_add(lnum, col + 1, {type: 'EasyJump', bufnr: buf, length: 1})
+                tagged[$'{lnum}-{col}'] = 1
+                tags[nextchar] = [lnum, col]
+            endif
+        endif
+    endfor
+    var remaining = letters->split('\zs')->filter((_, v) => !tags->has_key(v))
+    # allocate remaining letters
+    for idx in range(group * ntags, min([locations->len() - 1, (group * ntags) + ntags - 1]))
+        var [lnum, col] = locations[idx]
+        if !tagged->has_key($'{lnum}-{col}')
+            # prop_add(lnum, col + 1, {type: propname, text: remaining[0]})
+            tags[remaining[0]] = [lnum, col]
+            remaining->remove(0) # pop
+        endif
+    endfor
     try
-        # try to put tag char that match next char
-        for idx in range(group * ntags, min([locations->len() - 1, (group * ntags) + ntags - 1]))
-            var [lnum, cnum] = locations[idx]
-            var line = getline(lnum)
-            if cnum < line->len()
-                var nextchar = line[cnum]
-                if !tags->has_key(nextchar) && letters->stridx(nextchar) != -1
-                    prop_add(lnum, cnum + 1, {type: propname, text: nextchar})
-                    tagged[$'{lnum}-{cnum}'] = 1
-                    tags[nextchar] = [lnum, cnum]
-                endif
-            endif
-        endfor
-        var remaining = letters->split('\zs')->filter((_, v) => !tags->has_key(v))
-        # allocate remaining letters
-        for idx in range(group * ntags, min([locations->len() - 1, (group * ntags) + ntags - 1]))
-            var [lnum, cnum] = locations[idx]
-            if !tagged->has_key($'{lnum}-{cnum}')
-                prop_add(lnum, cnum + 1, {type: propname, text: remaining[0]})
-                tags[remaining[0]] = [lnum, cnum]
-                remaining->remove(0) # pop
-            endif
+        # InitTextProp()
+        for [tag, location] in tags->items()
+            var [lnum, col] = location
+            ShowTag(tag, lnum, col)
+            # prop_add(lnum, col + 1, {type: 'EasyJump', bufnr: buf, length: 1})
         endfor
     finally
         :redraw
     endtry
 enddef
 
-def JumpTo(tgt: string, group: number)
+def JumpTo(tgt: string)
     if tags->has_key(tgt)
         :normal! m'
         cursor(tags[tgt])
@@ -144,7 +164,6 @@ enddef
 
 # main entry point
 export def Jump()
-    [lstart, lend] = [line('w0'), line('w$')] # Cache this since visible lines can change after jump
     GatherLocations()
     var ngroups = locations->len() / letters->len() + 1
     var group = 0
@@ -160,19 +179,20 @@ export def Jump()
                     group = (group + 1) % ngroups
                     ShowLocations(group)
                 else
-                    JumpTo(ch, group)
+                    JumpTo(ch)
                     break
                 endif
             endwhile
         else
             var ch = getcharstr()
-            JumpTo(ch, group)
+            JumpTo(ch)
         endif
     finally
-        if !prop_type_get(propname)->empty()
-            while prop_remove({type: propname}, lstart, lend) > 0
-            endwhile
-        endif
-        # prop_type_delete(propname) # XXX Vim bug: 'J' after jump causes corruption
+        popup_clear()
+        # if !prop_type_get(propname)->empty()
+        #     while prop_remove({type: propname}, lstart, lend) > 0
+        #     endwhile
+        # endif
+        # # prop_type_delete(propname) # XXX Vim bug: 'J' after jump causes corruption
     endtry
 enddef

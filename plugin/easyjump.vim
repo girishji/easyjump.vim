@@ -8,6 +8,7 @@ g:loaded_easyjump = true
 # Jump to any character on screen using 2 characters.
 
 :highlight default link EasyJump MatchParen
+# :highlight default EasyJump ctermfg=3 ctermbg=9
 
 import autoload '../autoload/jump.vim'
 
