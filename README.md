@@ -1,49 +1,52 @@
 # EasyJump.vim
 
-Jump to any location by typing 2 characters.
+Jump to any location on screen by typing two characters.
 
-- Mapped to `s` but any other trigger (like `,`) can be configured (see below).
-- Vim idioms supported. Use `ds` to delete, `cs` to change, `vs` to select visually, etc.
-- Jump list (`:jumps`) updated so that you can jump back using `<c-o>`.
-- Does not alter the buffer. Written in vim9 script.
+- Initially bound to `s`, but it can be reassigned to any desired trigger (e.g., `,`).
+- Supports essential Vim idioms such as `ds` for deletion, `cs` for change, `vs` for visual selection, and more.
+- Updates the jump list (`:jumps`) for easy navigation back using `<c-o>`.
+- Non-disruptive: Does not modify the buffer. Crafted in vim9 script.
 
-🚀 **Jump (ex. `s`)**: Type `s` and `c` (say) and you'll see new tag characters
-appear in place of `c`. Type `e` (for instance) and cursor jumps to the `c` under `e`.
+
+🚀 **Jump (`s`)**: Input `s` followed by another character (like `c`). Witness
+new tag characters replacing the specified character. For instance, typing `e`
+navigates the cursor to the `c` under `e`.
 
 <img src='img/img1.jpeg' width='700'>
 
-🚀 **Jump back**: Type `<c-o>` (control-O). Jump forward with `<tab>` or `<c-i>'.
+🚀 **Jump back**: Type `<c-o>` (control-O). Jump forward using `<tab>` or `<c-i>'.
 
-🚀 **Visual Select (ex. `vs`)**: To visually select a block of text starting
-from cursor position to some occurrence of `c` type `vsc` and then type the
-highlighted character (say `e`).
+🚀 **Visual Select (`vs`)**: For visually selecting a block of text from the
+cursor position up to an instance of `c`, enter `vsc`, then the highlighted
+character (e.g., `e`).
 
 <img src='img/img2.jpeg' width='700'>
 
-Similarly, `ds` to delete, `cs` to change text.
+Likewise, use `ds` for deletion or `cs` for text alteration.
 
-Type `<esc>` to **cancel** the jump.
+Press `<esc>` to cancel the ongoing jump.
 
-Above illustrations use `:colorscheme quiet`.
+The displayed illustrations are based on `:colorscheme quiet`.
 
-**What if there is no letter next to where you want to jump to?**
+**What if the intended jump location lacks a nearby tag letter?**
 
-This happens when there are not enough available unique letters to tag. Simply type
-`<Tab>` (or `,`, or `;`) and you'll see tag letters appear in remaining
-locations.
+This scenario occurs when there aren't enough unique letters available for
+tagging. Simply use `<Tab>` (or `,`, or `;`), and you'll observe tag letters
+populating the remaining locations.
 
-**Motivation:** For a long time I have used relative numbers with `j`/`k` along
-with `f`/`t` commands to jump. But I always found it distracting to shift focus to the left to
-look up the line number. This plugin helps you keep your eyes on the
-target. I think this is the missing motion of Vim.
+**Motivation:** Over time, I relied on relative numbers (`j`/`k`) and `f`/`t`
+commands for navigation. However, I found it distracting to constantly shift
+focus to the left to identify line numbers. This plugin enables seamless
+targeting, allowing users to maintain focus on the task at hand—an aspect I
+believe is a vital motion feature missing from Vim.
 
 # Requirements
 
-- Vim >= 9.0
+- Vim version 9.0 or higher
 
 # Installation
 
-Install using [vim-plug](https://github.com/junegunn/vim-plug). Put the following in `.vimrc` file.
+Install using [vim-plug](https://github.com/junegunn/vim-plug). Add the following lines to your `.vimrc` file:
 
 ```
 vim9script
@@ -52,7 +55,7 @@ Plug 'girishji/easyjump.vim'
 plug#end()
 ```
 
-Legacy script:
+For legacy scripts, use:
 
 ```
 call plug#begin()
@@ -60,21 +63,21 @@ Plug 'girishji/easyjump.vim'
 call plug#end()
 ```
 
-Or use Vim's builtin package manager.
+Alternatively, utilize Vim's built-in package manager.
 
 # Configuration
 
 ### Trigger Key
 
-By default `s` is the trigger key. To restore it to default (`:h s`) put the following in `.vimrc`
-file.
+By default, `s` serves as the trigger key. To unmap `s` and restore it to the default (:h s),
+include the following line in your .vimrc file:
 
 ```
 g:easyjump_default_keymap = false
 ```
 
-To make `,` trigger the jump put the following in `.vimrc` file. Any other key
-can also be used beside `,`.
+To assign `,` as the trigger for jumping, add the following lines to your `.vimrc`
+file. You can choose any other key beside `,`.
 
 ```
 nmap , <Plug>EasyjumpJump;
@@ -82,10 +85,10 @@ omap , <Plug>EasyjumpJump;
 vmap , <Plug>EasyjumpJump;
 ```
 
-### Case Sensitive
+### Case Sensitivity
 
-To choose among case sensitive (case), insensitive (icase), and smart case
-(smart) for search put the following in `.vimrc`.
+For defining case sensitivity in search (options include 'case', 'icase', or
+'smart'), add the following line to your .vimrc:
 
 ```
 g:easyjump_case = 'smart' # Can be 'case', 'icase', or 'smart' (default).
@@ -93,15 +96,15 @@ g:easyjump_case = 'smart' # Can be 'case', 'icase', or 'smart' (default).
 
 ### Highlight
 
-The virtual text that appears next to destination locations uses highlighted
-group `EasyJump`. It is linked to `IncSearch` by default. Set this group using
-`:highlight` command to change colors.
+The virtual text displayed alongside destination locations utilizes the
+highlighted group `EasyJump`. By default, it is linked to `IncSearch`. Modify this
+group's appearance using the `:highlight` command to change colors.
 
-### Letters
+### Tag Letters
 
-Jump locations are prioritized based on the distance from the cursor. Tag letters
-are placed in the following order, with at least one letter per line. The
-order of letters can be changed through the following global variable.
+Jump locations prioritize placement based on distance from cursor. Tag letters are
+arranged in a specific order, with at least one letter per line. Adjust the
+sequence of letters using the global variable:
 
 ```
 g:easyjump_letters = 'asdfgwercvhjkluiopynmbtqxzASDFGWERCVHJKLUIOPYNMBTQXZ0123456789'
