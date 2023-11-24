@@ -98,7 +98,7 @@ make the search case sensitive (case), insensitive (icase), or smart case
 
 Highlight~
 
-The virtual text that appears next to destination locations uses highlighted
+The tag letters that appear next to destination locations utilize highlight
 group `EasyJump`. It is linked to `MatchParen` by default. Set this group using
 `:highlight` command to change colors.
 

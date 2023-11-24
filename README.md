@@ -96,7 +96,7 @@ g:easyjump_case = 'smart' # Can be 'case', 'icase', or 'smart' (default).
 
 ### Highlight
 
-The virtual text displayed alongside destination locations utilizes the
+The tag letters displayed alongside destination locations utilizes the
 highlighted group `EasyJump`. By default, it is linked to `IncSearch`. Modify this
 group's appearance using the `:highlight` command to change colors.
 
