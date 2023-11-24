@@ -27,3 +27,15 @@ enddef
 augroup EasyJump | autocmd!
     autocmd VimEnter * jump.Setup()
 augroup END
+
+def EasyJumpJump()
+    if mode() == "\<C-V>" || mode() =~ '\v(v|V)'
+        VJump()
+    elseif mode() =~ '\v(n|no)'
+        Jump()
+    endif
+enddef
+
+if get(g:, 'easyjump_command', false) && !exists(':EasyJump')
+    command EasyJump EasyJumpJump()
+endif
