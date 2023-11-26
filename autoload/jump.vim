@@ -23,14 +23,14 @@ enddef
 
 # gather locations to jump to, starting from cursor position and searching outwards
 def GatherLocations()
-    var [lstart, lend] = [line('w0'), line('w$')]
+    var [lstart, lend] = [line('w0'), line('w$')] # lines on screen
     var curpos = getcurpos()
     var ch = easyjump_case ==? 'icase' ? getcharstr()->tolower() : getcharstr()
     var ignorecase = (easyjump_case ==? 'icase' || (easyjump_case ==? 'smart' && ch =~ '\U')) ? true : false
     var Ignorecase = (s) => ignorecase ? s->tolower() : s
     locations = []
 
-    var curline = curpos[1]
+    var [curline, curcol] = [curpos[1], curpos[2]]
     var linenrs = [curline]
     for dist in range(1, (lend - lstart))
         if curline + dist <= lend
@@ -49,21 +49,25 @@ def GatherLocations()
         while col != -1
             col += 1 # column numbers start from 1
             if ch == ' ' && !locations->empty() && locations[-1] == [lnum, col - 1]
-                locations[-1][1] = col
-            elseif [lnum, col] != [curpos[1], curpos[2]]
+                locations[-1][1] = col # one target per adjacent spaces
+            elseif [lnum, col] != [curline, curcol] # no target on cursor position
                 locations->add([lnum, col])
             endif
             col = line->stridx(ch, col)
         endwhile
+        if lnum == curline # prioritize based on distance from cursor
+            locations->sort((x, y) => abs(x[1] - curcol) - abs(y[1] - curcol))
+        endif
     endfor
 enddef
 
 # order locations list by keeping more locations near cursor, and at least one per line
 def Prioritize()
-    var [lstart, lend] = [line('w0'), line('w$')]
+    var [lstart, lend] = [line('w0'), line('w$')] # lines on screen start/end
     var highpri = []
     var lowpri = []
     var expected = locations->len()
+    var curline = line('.')
     def FilterLocations(tlinenr: number, tmax: number)
         if tlinenr < lstart || tlinenr > lend
             return
@@ -74,7 +78,6 @@ def Prioritize()
         lowpri->extend(curlocations->slice(tmax))
     enddef
 
-    var curline = line('.')
     FilterLocations(curline, 10) # 10 locations max
     if locations->len() > (lend - lstart)
         var excess = locations->len() - (lend - lstart)
