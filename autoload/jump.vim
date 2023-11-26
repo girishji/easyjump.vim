@@ -107,7 +107,7 @@ enddef
 def VisualPos(lnum: number, col: number): list<number>
     var screenpos = win_getid()->screenpos(lnum, col)
     if screenpos == {row: 0, col: 0, endcol: 0, curscol: 0}
-        echoe "screenpos() error"
+        # position is not visible on screen (col too big)
         return [-1, -1]
     endif
     var diff = 0
@@ -122,13 +122,15 @@ enddef
 
 def ShowTag(tag: string, lnum: number, col: number)
     var [linenum, colnum] = VisualPos(lnum, col)
-    var id = popup_create(tag, {
-        line: linenum,
-        col: colnum,
-        highlight: 'EasyJump',
-        wrap: false,
-        zindex: 50 - 1,
+    if lnum != -1
+        popup_create(tag, {
+            line: linenum,
+            col: colnum,
+            highlight: 'EasyJump',
+            wrap: false,
+            zindex: 50 - 1,
         })
+    endif
 enddef
 
 def ShowLocations(group: number)
