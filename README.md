@@ -39,8 +39,8 @@ populating the remaining locations.
 - One quick way to navigate without thinking too much is to search for a space
   character. Try '`s `' (`s` followed by `<space>`). Type another character and
   it often puts the cursor in close proximity of your destination.
-- Vim's builtin 'f/F, t/T' is still the quickest way to jump within a line. Use it
-  frequently.
+- Vim's builtin `f/F, t/T` commands are often the quickest way to jump within a line. Use it
+  as appropriate.
 
 Over time, I relied on relative line numbers for navigation. However, I found it
 distracting to constantly shift
