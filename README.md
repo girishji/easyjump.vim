@@ -34,11 +34,18 @@ This scenario occurs when there aren't enough unique letters available for
 tagging. Simply use `<Tab>` (or `,`, or `;`), and you'll observe tag letters
 populating the remaining locations.
 
-**Motivation:** Over time, I relied on relative numbers (`j`/`k`) and `f`/`t`
-commands for navigation. However, I found it distracting to constantly shift
+**Tips:**
+
+- One quick way to navigate without thinking too much is to search for a space
+  character. Try `s ` (`s` followed by `<space>`). Type another character and
+  it often puts the cursor in close proximity of your destination.
+- Vim's builtin 'f/F, t/T' is still the quickest way to jump within a line. Use it
+  frequently.
+
+Over time, I relied on relative line numbers for navigation. However, I found it
+distracting to constantly shift
 focus to the left to identify line numbers. This plugin enables seamless
-targeting, allowing users to maintain focus on the task at hand—an aspect I
-believe is a vital motion feature missing from Vim.
+targeting and allows users to maintain focus on the task at hand.
 
 # Requirements
 
