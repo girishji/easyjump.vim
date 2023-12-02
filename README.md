@@ -5,8 +5,8 @@ Jump to any location on screen by typing two characters.
 ### TL;DR
 
 - `s` + _character1_ (a search character) + _character2_ (tag character) to jump
-- `ds` + _character1_ + _character2_ to delete (similarly, 'v' for visual selection, 'c' for change, etc.)
-- `<tab>` or `;` or `,` after _character1_ to view additional tags (_character2_)
+- `ds` + _character1_ + _character2_ to delete (similarly, `v` for visual selection, `c` for change, etc.)
+- `<tab>` or `;` or `,` after _character1_ to view additional tag characters (_character2_)
 
 ### Features
 
