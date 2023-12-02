@@ -3,7 +3,7 @@
 Jump to any location on screen by typing two characters.
 
 - Initially bound to `s`, but it can be reassigned to any desired trigger (e.g., `,`).
-- Supports essential Vim idioms such as `ds` for deletion, `cs` for change, `vs` for visual selection, and more.
+- Supports essential Vim idioms such as `ds` for deletion, `cs` for change, `vs` for visual selection, and more. Here `s` is the trigger character.
 - Updates the jump list (`:jumps`) for easy back-navigation using `<c-o>`.
 - Non-disruptive: Does not modify the buffer. Crafted in vim9 script.
 
