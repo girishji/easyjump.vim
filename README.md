@@ -4,17 +4,18 @@ Jump to any location on screen by typing two characters.
 
 - Initially bound to `s`, but it can be reassigned to any desired trigger (e.g., `,`).
 - Supports essential Vim idioms such as `ds` for deletion, `cs` for change, `vs` for visual selection, and more.
-- Updates the jump list (`:jumps`) for easy navigation back using `<c-o>`.
+- Updates the jump list (`:jumps`) for easy back-navigation using `<c-o>`.
 - Non-disruptive: Does not modify the buffer. Crafted in vim9 script.
 
 
-🚀 **Jump (`s`)**: Input `s` followed by another character (like `c`). Witness
-new tag characters replacing the specified character. For instance, typing `e`
+🚀 **Jump (`s`)**: Type `s` followed by a 'search' character (like `c`). Witness
+new tag characters replacing the searched character (in this case `c`). Typing next
+character initiates the jump. For instance, typing `e`
 navigates the cursor to the `c` under `e`.
 
 <img src='img/img1.jpeg' width='700'>
 
-🚀 **Jump back**: Type `<c-o>` (control-O). Jump forward using `<tab>` or `<c-i>'.
+🚀 **Jump back**: Type `<c-o>` (control-O) to jump back. Type `<tab>` or `<c-i>` to jump forward.
 
 🚀 **Visual Select (`vs`)**: For visually selecting a block of text from the
 cursor position up to an instance of `c`, enter `vsc`, then the highlighted
@@ -31,7 +32,7 @@ The displayed illustrations are based on `:colorscheme quiet`.
 **What if the intended jump location lacks a nearby tag letter?**
 
 This scenario occurs when there aren't enough unique letters available for
-tagging. Simply use `<Tab>` (or `,`, or `;`), and you'll observe tag letters
+tagging. Simply type `<Tab>` (or `,`, or `;`), and you'll see new tag letters
 populating the remaining locations.
 
 **Tips:**
