@@ -27,13 +27,13 @@ Likewise, use `ds` for deletion or `cs` for text alteration.
 
 Press `<esc>` to cancel the ongoing jump.
 
-The displayed illustrations are based on `:colorscheme quiet`.
+Pictures above are based on `:colorscheme quiet`.
 
-**What if the intended jump location lacks a nearby tag letter?**
+**What if the intended jump location is not showing a tag letter?**
 
 This scenario occurs when there aren't enough unique letters available for
 tagging. Simply type `<Tab>` (or `,`, or `;`), and you'll see new tag letters
-populating the remaining locations.
+populate the remaining locations.
 
 **Tips:**
 
