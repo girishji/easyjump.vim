@@ -8,8 +8,8 @@ Jump to any location on screen by typing two characters.
 - Non-disruptive: Does not modify the buffer. Crafted in vim9 script.
 
 
-🚀 **Jump (`s`)**: Type `s` followed by a 'search' character (like `c`). Witness
-new tag characters replacing the searched character (in this case `c`). Typing next
+🚀 **Jump (`s`)**: Type `s` followed by a 'search' character (say `c`). Witness
+new tag characters replacing the searched character. Typing next
 character initiates the jump. For instance, typing `e`
 navigates the cursor to the `c` under `e`.
 
