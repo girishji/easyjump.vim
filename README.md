@@ -103,14 +103,14 @@ vmap , <Plug>EasyjumpJump;
 
 ### Case Sensitivity
 
-For defining case sensitivity in search (options include 'case', 'icase', or
-'smart'), add the following line to your .vimrc:
+Options include 'case' (case sensitive), 'icase' (ignore case), or 'smart'
+(smart case). Add the following line to your .vimrc:
 
 ```
 g:easyjump_case = 'smart' # Can be 'case', 'icase', or 'smart' (default).
 ```
 
-### Highlight
+### Highlight Group
 
 The tag letters displayed alongside destination locations utilize the
 highlighted group `EasyJump`. By default, this group is linked to `IncSearch`. Modify its
@@ -118,9 +118,10 @@ appearance using the `:highlight` command to change colors.
 
 ### Tag Letters
 
-Jump locations prioritize placement based on distance from cursor. Tag letters are
-arranged in a specific order, with at least one letter per line. Adjust the
-sequence of letters using the global variable:
+Jump locations prioritize placement based on distance from cursor and
+preference for having at least one placement per line.
+Letters are picked in the following sequence. Modify the sequence (say, for
+Dvorak) as needed. Set the following global variable:
 
 ```
 g:easyjump_letters = 'asdfgwercvhjkluiopynmbtqxzASDFGWERCVHJKLUIOPYNMBTQXZ0123456789'
