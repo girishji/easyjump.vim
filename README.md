@@ -2,6 +2,14 @@
 
 Jump to any location on screen by typing two characters.
 
+### TL;DR
+
+- `s` + _character1_ (a search character) + _character2_ (tag character) to jump
+- `ds` + _character1_ + _character2_ to delete (similarly, 'v' for visual selection, 'c' for change, etc.)
+- `<tab>` or `;` or `,` after _character1_ to view additional tags (_character2_)
+
+### Features
+
 - Initially bound to `s`, but it can be reassigned to any desired trigger (e.g., `,`).
 - Supports essential Vim idioms such as `ds` for deletion, `cs` for change, `vs` for visual selection, and more. Here `s` is the trigger character.
 - Updates the jump list (`:jumps`) for easy back-navigation using `<c-o>`.
