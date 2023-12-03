@@ -4,7 +4,7 @@ Jump to any location on screen by typing two characters.
 
 ### TL;DR
 
-- `s` + _character1_ (a search character) + _character2_ (tag character) to jump
+- `s` + _character1_  + _character2_ to jump
 - `ds` + _character1_ + _character2_ to delete (similarly, `v` for visual selection, `c` for change, etc.)
 - `<tab>` or `;` or `,` after _character1_ to view additional tag characters (_character2_)
 
@@ -16,8 +16,8 @@ Jump to any location on screen by typing two characters.
 - Non-disruptive: Does not modify the buffer. Crafted in vim9 script.
 
 
-🚀 **Jump (`s`)**: Type `s` followed by a 'search' character (say `c`). Witness
-new tag characters replacing the searched character. Typing next
+🚀 **Jump (`s`)**: Type `s` followed by a character (say `c`). Witness
+new tag characters replacing the character `c`. Typing next
 character initiates the jump. For instance, typing `e`
 navigates the cursor to the `c` under `e`.
 
