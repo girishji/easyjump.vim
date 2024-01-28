@@ -23,7 +23,8 @@ enddef
 
 # gather locations to jump to, starting from cursor position and searching outwards
 def GatherLocations()
-    var [lstart, lend] = [line('w0'), line('w$')] # lines on screen
+    # line('w$') does not include a long line (broken into many lines) that is only partly visible
+    var [lstart, lend] = [max([1, line('w0')]), min([line('w$') + 1, line('$')])] # lines on screen
     var curpos = getcurpos()
     var ch = easyjump_case ==? 'icase' ? getcharstr()->tolower() : getcharstr()
     var ignorecase = (easyjump_case ==? 'icase' || (easyjump_case ==? 'smart' && ch =~ '\U')) ? true : false
@@ -170,21 +171,18 @@ export def Jump()
     endif
     try
         ShowLocations(group)
-        if ngroups > 1
-            while true
-                var ch = getcharstr()
-                if ch == ';' || ch == ',' || ch == "\<tab>"
+        while true
+            var ch = getcharstr()
+            if ch == ';' || ch == ',' || ch == "\<tab>"
+                if ngroups > 1
                     group = (group + 1) % ngroups
                     ShowLocations(group)
-                else
-                    JumpTo(ch, group)
-                    break
                 endif
-            endwhile
-        else
-            var ch = getcharstr()
-            JumpTo(ch, group)
-        endif
+            else
+                JumpTo(ch, group)
+                break
+            endif
+        endwhile
     finally
         popup_clear()
     endtry
