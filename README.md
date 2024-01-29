@@ -96,9 +96,9 @@ To assign `,` as the trigger for jumping, add the following lines to your `.vimr
 file. You can choose any other key beside `,`.
 
 ```
-nmap , <Plug>EasyjumpJump;
-omap , <Plug>EasyjumpJump;
-vmap , <Plug>EasyjumpJump;
+nmap <expr> , g:EasyJumpable() ? '<Plug>EasyjumpJump;' : ','
+omap <expr> , g:EasyJumpable() ? '<Plug>EasyjumpJump;' : ','
+vmap <expr> , g:EasyJumpable() ? '<Plug>EasyjumpJump;' : ','
 ```
 
 ### Case Sensitivity

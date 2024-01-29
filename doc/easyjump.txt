@@ -84,9 +84,9 @@ file. `s` will be restored to Vim original keybinding (`:h s`).
 
 To make `,` (for example) trigger the jump put the following in `.vimrc` file.
 >
-	nmap , <Plug>EasyjumpJump;
-	omap , <Plug>EasyjumpJump;
-	vmap , <Plug>EasyjumpJump;
+	nmap <expr> , g:EasyJumpable() ? '<Plug>EasyjumpJump;' : ','
+	omap <expr> , g:EasyJumpable() ? '<Plug>EasyjumpJump;' : ','
+	vmap <expr> , g:EasyJumpable() ? '<Plug>EasyjumpJump;' : ','
 
 Case~
 
