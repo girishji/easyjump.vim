@@ -4,20 +4,6 @@ var locations: list<list<number>> = [] # A list of {line nr, column nr} to jump 
 var letters: string
 var easyjump_case: string
 
-# Workaround for Vim bug: https://github.com/vim/vim/issues/13932
-def g:EasyJumpable(): bool
-    if pumvisible()
-        return false
-    endif
-    for id in popup_list()
-        var attrs = id->popup_getpos()
-        if attrs->has_key('visible') && attrs.visible == 1
-            return false
-        endif
-    endfor
-    return true
-enddef
-
 export def Setup()
     easyjump_case = get(g:, 'easyjump_case', 'smart') # case/icase/smart
     letters = get(g:, 'easyjump_letters', '')
@@ -29,9 +15,9 @@ export def Setup()
         echoe 'EasyJump: Letters list has duplicates'
     endif
     if get(g:, 'easyjump_default_keymap', true) && !hasmapto('<Plug>EasyjumpJump;', 'n') && mapcheck(',', 'n') ==# ''
-        :nmap <expr> s g:EasyJumpable() ? '<Plug>EasyjumpJump;' : 's'
-        :omap <expr> s g:EasyJumpable() ? '<Plug>EasyjumpJump;' : 's'
-        :vmap <expr> s g:EasyJumpable() ? '<Plug>EasyjumpJump;' : 's'
+        :nmap s <Plug>EasyjumpJump;
+        :omap s <Plug>EasyjumpJump;
+        :vmap s <Plug>EasyjumpJump;
     endif
 enddef
 
