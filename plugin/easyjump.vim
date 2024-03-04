@@ -9,7 +9,7 @@ g:loaded_easyjump = true
 
 :highlight default link EasyJump MatchParen
 
-import autoload '../autoload/jump.vim'
+import autoload '../autoload/easyjump/jump.vim'
 
 def Jump()
     jump.Jump()
