@@ -126,3 +126,15 @@ Dvorak) as needed. Set the following global variable:
 ```
 g:easyjump_letters = 'asdfgwercvhjkluiopynmbtqxzASDFGWERCVHJKLUIOPYNMBTQXZ0123456789'
 ```
+
+## Other Plugins to Enhance Your Workflow
+
+1. [**devdocs.vim**](https://github.com/girishji/devdocs.vim) - browse documentation from [devdocs.io](https://devdocs.io).
+
+2. [**fFtT.vim**](https://github.com/girishji/fFtT.vim) - accurately target words in a line.
+
+3. [**scope.vim**](https://github.com/girishji/scope.vim) - fuzzy find anything.
+
+4. [**autosuggest.vim**](https://github.com/girishji/autosuggest.vim) - live autocompletion for Vim's command line.
+
+5. [**vimcomplete**](https://github.com/girishji/vimcomplete) - enhances autocompletion in Vim.
