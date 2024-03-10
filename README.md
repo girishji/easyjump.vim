@@ -21,7 +21,7 @@ new tag characters replacing the character `c`. Typing next
 character initiates the jump. For instance, typing `e`
 navigates the cursor to the `c` under `e`.
 
-<img src='img/img1.jpeg' width='700'>
+<img src='https://gist.githubusercontent.com/girishji/40e35cd669626212a9691140de4bd6e7/raw/6041405e45072a7fbc4e352cbd461e450a7af90e/easyjump-img1.jpeg' width='700'>
 
 🚀 **Jump back**: Type `<c-o>` (control-O) to jump back. Type `<tab>` or `<c-i>` to jump forward.
 
@@ -29,7 +29,7 @@ navigates the cursor to the `c` under `e`.
 cursor position up to an instance of `c`, enter `vsc`, then the highlighted
 character (e.g., `e`).
 
-<img src='img/img2.jpeg' width='700'>
+<img src='https://gist.githubusercontent.com/girishji/40e35cd669626212a9691140de4bd6e7/raw/6041405e45072a7fbc4e352cbd461e450a7af90e/easyjump-img2.jpeg' width='700'>
 
 Likewise, use `ds` for deletion or `cs` for text alteration.
 
