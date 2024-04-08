@@ -14,7 +14,8 @@ export def Setup()
     if letters->split('\zs')->sort()->uniq()->len() != letters->len()
         echoe 'EasyJump: Letters list has duplicates'
     endif
-    if get(g:, 'easyjump_default_keymap', true) && !hasmapto('<Plug>EasyjumpJump;', 'n') && mapcheck(',', 'n') ==# ''
+    # if get(g:, 'easyjump_default_keymap', true) && !hasmapto('<Plug>EasyjumpJump;', 'n') && mapcheck('s', 'n') ==# ''
+    if get(g:, 'easyjump_default_keymap', true)
         :nmap s <Plug>EasyjumpJump;
         :omap s <Plug>EasyjumpJump;
         :vmap s <Plug>EasyjumpJump;
