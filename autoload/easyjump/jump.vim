@@ -26,13 +26,12 @@ enddef
 def GatherLocations()
     # line('w$') does not include a long line (broken into many lines) that is only partly visible
     var [lstart, lend] = [max([1, line('w0')]), min([line('w$') + 1, line('$')])] # lines on screen
-    var curpos = getcurpos()
     var ch = easyjump_case ==? 'icase' ? getcharstr()->tolower() : getcharstr()
     var ignorecase = (easyjump_case ==? 'icase' || (easyjump_case ==? 'smart' && ch =~ '\U')) ? true : false
     var Ignorecase = (s) => ignorecase ? s->tolower() : s
     locations = []
 
-    var [curline, curcol] = [curpos[1], curpos[2]]
+    var [curline, curcol] = getcurpos()[1 : 2]
     var linenrs = [curline]
     for dist in range(1, (lend - lstart))
         if curline + dist <= lend
@@ -51,7 +50,7 @@ def GatherLocations()
         while col != -1
             col += 1 # column numbers start from 1
             if ch == ' ' && !locations->empty() && locations[-1] == [lnum, col - 1]
-                locations[-1][1] = col # one target per adjacent spaces
+                locations[-1][1] = col # one target per cluster of adjacent spaces
             elseif [lnum, col] != [curline, curcol] # no target on cursor position
                 locations->add([lnum, col])
             endif
@@ -109,28 +108,30 @@ enddef
 # column number needs to be adjusted when:
 #   - screen column differs from column (ex. tab, non-ascii chars)
 #   - concealed text is present
+# returns screen column (counting line number columns and gutter)
 def VisualPos(lnum: number, col: number): list<number>
     var screenpos = win_getid()->screenpos(lnum, col)
     if screenpos == {row: 0, col: 0, endcol: 0, curscol: 0}
-        # position is not visible on screen (col too big)
+        # position is not visible on screen (line too long)
         return [-1, -1]
     endif
+    # account for concealed chars
     var diff = 0
-    for c in range(1, col - 1)
-        var res = synconcealed(lnum, c)
+    var line = getline(lnum)
+    for cidx in range(line->charidx(col - 1))
+        var res = synconcealed(lnum, line->byteidx(cidx) + 1)  # add 1 to get col
         if res[0]
-            diff += (1 - res[1]->len())
+            diff += line->strcharpart(cidx, 1)->len() - res[1]->len() - 1
         endif
     endfor
     return [screenpos.row, screenpos.col - diff]
 enddef
 
 def ShowTag(tag: string, lnum: number, col: number)
-    var [linenum, colnum] = VisualPos(lnum, col)
     if lnum != -1
         popup_create(tag, {
-            line: linenum,
-            col: colnum,
+            line: lnum,
+            col: col,
             highlight: 'EasyJump',
             wrap: false,
             zindex: 50 - 1,
@@ -144,6 +145,7 @@ def ShowLocations(group: number)
         var ntags = letters->len()
         for idx in range(min([ntags, locations->len() - group * ntags]))
             var [lnum, col] = locations[idx + group * ntags]
+            [lnum, col] = VisualPos(lnum, col)
             ShowTag(letters[idx], lnum, col)
         endfor
     finally
