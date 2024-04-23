@@ -11,18 +11,18 @@ g:loaded_easyjump = true
 
 import autoload '../autoload/easyjump/jump.vim'
 
-def Jump()
-    jump.Jump()
+def Jump(count: number = 1)
+    jump.Jump(count == 2)
 enddef
 
-def VJump()
-    jump.Jump()
+def VJump(count: number = 1)
+    jump.Jump(count == 2)
     :normal! m'gv``
 enddef
 
-:nnoremap <silent> <Plug>EasyjumpJump; :<c-u>call <SID>Jump()<cr>
-:onoremap <silent> <Plug>EasyjumpJump; :<c-u>call <SID>Jump()<cr>
-:vnoremap <silent> <Plug>EasyjumpJump; :<c-u>call <SID>VJump()<cr>
+:nnoremap <silent> <Plug>EasyjumpJump; :<c-u>call <SID>Jump(v:count1)<cr>
+:onoremap <silent> <Plug>EasyjumpJump; :<c-u>call <SID>Jump(v:count1)<cr>
+:vnoremap <silent> <Plug>EasyjumpJump; :<c-u>call <SID>VJump(v:count1)<cr>
 
 augroup EasyJump | autocmd!
     autocmd VimEnter * jump.Setup()

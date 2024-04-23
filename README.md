@@ -2,17 +2,18 @@
 
 Jump to any location on screen by typing two characters.
 
-### TL;DR
+## TL;DR
 
-- `s` + _character1_  + _character2_ to jump
-- `ds` + _character1_ + _character2_ to delete (similarly, `v` for visual selection, `c` for change, etc.)
-- `<tab>` or `;` or `,` after _character1_ to view additional tag characters (_character2_)
+- `s` + _character_ + _tag_character_ to jump
+- `ds` + _character_ + _tag_character_ to delete (similarly, `v` for visual selection, `c` for change, etc.)
+- `<tab>` or `;` or `,` after _character_ to view additional tag characters
 
-### Features
+## Features
 
 - Initially bound to `s`, but it can be reassigned to any desired trigger (e.g., `,`).
 - Supports essential Vim idioms such as `ds` for deletion, `cs` for change, `vs` for visual selection, and more. Here `s` is the trigger character.
 - Updates the jump list (`:jumps`) for easy back-navigation using `<c-o>`.
+- Optional two-character mode, for users accustomed to targeting with two characters instead of one.
 - Non-disruptive: Does not modify the buffer. Crafted in vim9 script.
 
 
@@ -37,24 +38,19 @@ Press `<esc>` to cancel the ongoing jump.
 
 Pictures above are based on `:colorscheme quiet`.
 
-**What if the intended jump location is not showing a tag letter?**
+🔎 **What if the intended jump location is not showing a tag letter?**
 
 This scenario occurs when there aren't enough unique letters available for
 tagging. Simply type `<Tab>` (or `,`, or `;`), and you'll see new tag letters
 populate the remaining locations.
 
-**Tips:**
+🚀 **Two-Character Mode**: Activated with `2s` or simply `s` if `g:easyjump_two_chars` is configured as `true`.
 
-- One quick way to navigate without thinking too much is to search for a space
-  character. Try '`s `' (`s` followed by `<space>`). Type another character and
-  it often puts the cursor in close proximity of your destination.
-- Vim's builtin `f/F, t/T` commands are often the quickest way to jump within a line. Use it
-  as appropriate.
+- Use `2s` + _character_ + _tag_character_ to leap to your destination (when a tag character marks the spot).
+- If no tag is present, type the adjacent character as well, forming `2s` + _character1_ + _character2_ + _tag_character_ to execute the jump.
 
-Over time, I relied on relative line numbers for navigation. However, I found it
-distracting to constantly shift
-focus to the left to identify line numbers. This plugin enables seamless
-targeting and allows users to maintain focus on the task at hand.
+> [!TIP]
+> A lazy way to navigate is by leveraging the space character as a guide. Experiment with typing `s` followed by `<space>`. This method aims to allocate one label per line. Once you're near your desired location within a line, you can [effectively employ](https://github.com/girishji/fFtT.vim) Vim's built-in `f/F, t/T` commands to reach it precisely. While using relative line numbers is an option (even without a plugin), this approach minimizes cognitive effort.
 
 # Requirements
 
@@ -83,7 +79,7 @@ Alternatively, utilize Vim's built-in package manager.
 
 # Configuration
 
-### Trigger Key
+## Trigger Key
 
 By default, `s` serves as the trigger key. To unmap `s` and restore it to the default (:h s),
 include the following line in your .vimrc file:
@@ -101,7 +97,7 @@ omap , <Plug>EasyjumpJump;
 vmap , <Plug>EasyjumpJump;
 ```
 
-### Case Sensitivity
+## Case Sensitivity
 
 Options include 'case' (case sensitive), 'icase' (ignore case), or 'smart'
 (smart case). Add the following line to your .vimrc:
@@ -110,13 +106,13 @@ Options include 'case' (case sensitive), 'icase' (ignore case), or 'smart'
 g:easyjump_case = 'smart' # Can be 'case', 'icase', or 'smart' (default).
 ```
 
-### Highlight Group
+## Highlight Group
 
 The tag letters displayed alongside destination locations utilize the
 highlighted group `EasyJump`. By default, this group is linked to `IncSearch`. Modify its
 appearance using the `:highlight` command to change colors.
 
-### Tag Letters
+## Tag Letters
 
 Jump locations prioritize placement based on distance from cursor and
 preference for having at least one placement per line.
@@ -127,7 +123,7 @@ Dvorak) as needed. Set the following global variable:
 g:easyjump_letters = 'asdfgwercvhjkluiopynmbtqxzASDFGWERCVHJKLUIOPYNMBTQXZ0123456789'
 ```
 
-## Other Plugins to Enhance Your Workflow
+# Other Plugins to Enhance Your Workflow
 
 1. [**devdocs.vim**](https://github.com/girishji/devdocs.vim) - browse documentation from [devdocs.io](https://devdocs.io).
 

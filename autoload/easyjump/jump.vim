@@ -2,6 +2,7 @@ vim9script
 
 var locations: list<list<number>> = [] # A list of {line nr, column nr} to jump to
 var letters: string
+var labels: string
 var easyjump_case: string
 
 export def Setup()
@@ -22,39 +23,50 @@ export def Setup()
     endif
 enddef
 
-# gather locations to jump to, starting from cursor position and searching outwards
-def GatherLocations()
+# get all line numbers in the visible are of the window ordered by distance from cursor
+def WindowLineNrs(): list<any>
     # line('w$') does not include a long line (broken into many lines) that is only partly visible
     var [lstart, lend] = [max([1, line('w0')]), min([line('w$') + 1, line('$')])] # lines on screen
-    var ch = easyjump_case ==? 'icase' ? getcharstr()->tolower() : getcharstr()
-    var ignorecase = (easyjump_case ==? 'icase' || (easyjump_case ==? 'smart' && ch =~ '\U')) ? true : false
+    var [curline, curcol] = getcurpos()[1 : 2]
+    var lnums = [curline]
+    for dist in range(1, (lend - lstart))
+        if curline + dist <= lend
+            lnums->add(curline + dist)
+        endif
+        if curline - dist >= lstart
+            lnums->add(curline - dist)
+        endif
+    endfor
+    return lnums
+enddef
+
+# search for locations to jump to, starting from cursor position and searching outwards
+def GatherLocations(ctx: string, filter_label: bool = false)
+    var ignorecase = (easyjump_case ==? 'icase' || (easyjump_case ==? 'smart' && ctx =~ '\U')) ? true : false
     var Ignorecase = (s) => ignorecase ? s->tolower() : s
+    labels = letters->copy()
     locations = []
 
     var [curline, curcol] = getcurpos()[1 : 2]
-    var linenrs = [curline]
-    for dist in range(1, (lend - lstart))
-        if curline + dist <= lend
-            linenrs->add(curline + dist)
-        endif
-        if curline - dist >= lstart
-            linenrs->add(curline - dist)
-        endif
-    endfor
-    for lnum in linenrs
+    var lnums = WindowLineNrs()
+    for lnum in lnums
         if foldclosed(lnum) != -1
             continue # ignore folded lines
         endif
         var line = Ignorecase(getline(lnum))
-        var col = line->stridx(ch)
+        var col = line->stridx(ctx)
         while col != -1
             col += 1 # column numbers start from 1
-            if ch == ' ' && !locations->empty() && locations[-1] == [lnum, col - 1]
+            if ctx == ' ' && !locations->empty() && locations[-1] == [lnum, col - 1]
                 locations[-1][1] = col # one target per cluster of adjacent spaces
             elseif [lnum, col] != [curline, curcol] # no target on cursor position
                 locations->add([lnum, col])
+                if filter_label && col < line->len() && line[col] != '~' # prevent E33
+                    # remove character next to ctx from label chars
+                    labels = labels->substitute(line[col], '', '')
+                endif
             endif
-            col = line->stridx(ch, col)
+            col = line->stridx(ctx, col)
         endwhile
         if lnum == curline # prioritize based on distance from cursor
             locations->sort((x, y) => abs(x[1] - curcol) - abs(y[1] - curcol))
@@ -142,11 +154,11 @@ enddef
 def ShowLocations(group: number)
     try
         popup_clear()
-        var ntags = letters->len()
+        var ntags = labels->len()
         for idx in range(min([ntags, locations->len() - group * ntags]))
             var [lnum, col] = locations[idx + group * ntags]
             [lnum, col] = VisualPos(lnum, col)
-            ShowTag(letters[idx], lnum, col)
+            ShowTag(labels[idx], lnum, col)
         endfor
     finally
         :redraw
@@ -154,8 +166,8 @@ def ShowLocations(group: number)
 enddef
 
 def JumpTo(tgt: string, group: number)
-    var tagidx = letters->stridx(tgt)
-    var locidx = tagidx + group * letters->len()
+    var tagidx = labels->stridx(tgt)
+    var locidx = tagidx + group * labels->len()
     if tagidx != -1 && locidx < locations->len()
         var loc = locations[locidx]
         :normal! m'
@@ -164,18 +176,38 @@ def JumpTo(tgt: string, group: number)
     popup_clear()
 enddef
 
-# main entry point
-export def Jump()
-    GatherLocations()
-    var ngroups = locations->len() / letters->len() + 1
-    var group = 0
+def GroupCount(): number
+    var ngroups = locations->len() / labels->len() + 1
     if ngroups > 1
         Prioritize()
     endif
+    return ngroups
+enddef
+
+# main entry point
+export def Jump(two_chars: bool = false)
+    var two_chars_mode = two_chars || get(g:, 'easyjump_two_chars', false)
+    var ch = (easyjump_case ==? 'icase') ? getcharstr()->tolower() : getcharstr()
+    GatherLocations(ch, two_chars_mode)
+    var ngroups = GroupCount()
+    var group = 0
     try
         ShowLocations(group)
+        var ctx = ch
+        ch = getcharstr()
+        if two_chars_mode
+            if ch != '~' && labels =~# ch
+                JumpTo(ch, group)
+                return
+            elseif !(ch == ';' || ch == ',' || ch == "\<tab>")
+                ctx ..= (easyjump_case ==? 'icase') ? ch->tolower() : ch
+                GatherLocations(ctx)
+                ngroups = GroupCount()
+                ShowLocations(group)
+                ch = getcharstr()
+            endif
+        endif
         while true
-            var ch = getcharstr()
             if ch == ';' || ch == ',' || ch == "\<tab>"
                 if ngroups > 1
                     group = (group + 1) % ngroups
@@ -185,6 +217,7 @@ export def Jump()
                 JumpTo(ch, group)
                 break
             endif
+            ch = getcharstr()
         endwhile
     finally
         popup_clear()
