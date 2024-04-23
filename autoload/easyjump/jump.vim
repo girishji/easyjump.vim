@@ -61,9 +61,12 @@ def GatherLocations(ctx: string, filter_label: bool = false)
                 locations[-1][1] = col # one target per cluster of adjacent spaces
             elseif [lnum, col] != [curline, curcol] # no target on cursor position
                 locations->add([lnum, col])
-                if filter_label && col < line->len() && line[col] != '~' # prevent E33
+                if filter_label && col < line->len()
                     # remove character next to ctx from label chars
-                    labels = labels->substitute(line[col], '', '')
+                    var idx = labels->stridx(line[col])
+                    if idx != -1
+                        labels = $'{labels->slice(0, idx)}{labels->slice(idx + 1)}'
+                    endif
                 endif
             endif
             col = line->stridx(ctx, col)
@@ -196,10 +199,16 @@ export def Jump(two_chars: bool = false)
         var ctx = ch
         ch = getcharstr()
         if two_chars_mode
-            if ch != '~' && labels =~# ch
+            if labels->stridx(ch) != -1
                 JumpTo(ch, group)
                 return
-            elseif !(ch == ';' || ch == ',' || ch == "\<tab>")
+            elseif ch == ';' || ch == ',' || ch == "\<tab>"  # switch to single char mode
+                labels = letters->copy()
+                ngroups = GroupCount()
+                if ngroups == 1
+                    ShowLocations(group)
+                endif
+            else
                 ctx ..= (easyjump_case ==? 'icase') ? ch->tolower() : ch
                 GatherLocations(ctx)
                 ngroups = GroupCount()
