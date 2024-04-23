@@ -44,7 +44,7 @@ This scenario occurs when there aren't enough unique letters available for
 tagging. Simply type `<Tab>` (or `,`, or `;`), and you'll see new tag letters
 populate the remaining locations.
 
-🚀 **Two-Character Mode**: Activated with `2s` or simply `s` if `g:easyjump_two_chars` is configured as `true`.
+🚀 **Two-Character Mode (New)**: Activated with `2s` or simply `s` if `g:easyjump_two_chars` is configured as `true`.
 
 - Use `2s` + _character_ + _tag_character_ to leap to your destination (when a tag character marks the spot).
 - If no tag is present, type the adjacent character as well, forming `2s` + _character1_ + _character2_ + _tag_character_ to execute the jump.
