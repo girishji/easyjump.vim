@@ -7,7 +7,7 @@ Jump to any location on screen by typing two characters.
 - `s` + _\<character>_ + _\<tag_character>_ to jump
 - `ds` + _\<character>_ + _\<tag_character>_ to delete (similarly, `vs` for visual selection, `cs` for change, etc.)
 - `<Tab>` and `<S-Tab>` (or `;` and `,`) after _\<character>_ to view additional tag characters
-- `2s` + _\<character_1>_ + _\<character_2>_ + _\<tag_character>_ to jump _(new)_
+- `2s` + _\<character_1>_ + _\<character_2>_ + _\<tag_character>_ to jump
 
 ## Features
 
