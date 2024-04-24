@@ -27,9 +27,16 @@ to some occurrence of `c` type `vsc` and then type the highlighted character
 
 What if there is no letter next to where you want to jump to?~
 
-This happens when there are not enough available unique letters. Simply type
-`<Tab>` (or `,` , or `;`) and you'll see letters appear in remaining
-locations.
+This scenario occurs when there aren't enough unique letters available for
+tagging. Simply press `<Tab>` (or `;`), and new tag labels will fill the
+remaining spots. To cycle backwards, press `<S-Tab>` (or `,`).
+
+Two-Character Mode (New): Activated with `2s` or simply `s` if
+`g:easyjump_two_chars` is configured as `true`.
+- Use `2s` + <character> + <tag_character> to leap to your destination (when a
+  tag character marks the spot).
+- If no tag label is present, type the adjacent character as well, forming
+  `2s` + <character_1> + <character_2> + _tag_character_ to execute the jump.
 
 ==============================================================================
 2. Features					*easyjump-features*
@@ -37,8 +44,7 @@ locations.
 - Mapped to `s` but any other trigger (like `,`) would work.
 - Vim idioms supported. Use `dsxy` to delete, `csxy` to change, `vsxy` to select visually, etc.
 - Jump list (`:jumps`) updated so that you can jump back using `<c-o>`.
-- Does not alter the buffer. Uses virtual text. Written in vim9 script.
-- Does not block the character you are trying to jump to.
+- Does not alter the buffer.
 
 ==============================================================================
 3. Requirements					*easyjump-requirements*

@@ -121,7 +121,7 @@ def Prioritize()
 enddef
 
 # column number needs to be adjusted when:
-#   - screen column differs from column (ex. tab, non-ascii chars)
+#   - screen column differs from byte column (ex. tab, non-ascii chars)
 #   - concealed text is present
 # returns screen column (counting line number columns and gutter)
 def VisualPos(lnum: number, col: number): list<number>
@@ -181,6 +181,7 @@ enddef
 
 def GroupCount(): number
     var ngroups = locations->len() / labels->len() + 1
+    ngroups -= (locations->len() % labels->len() == 0) ? 1 : 0
     if ngroups > 1
         Prioritize()
     endif
@@ -192,6 +193,9 @@ export def Jump(two_chars: bool = false)
     var two_chars_mode = two_chars || get(g:, 'easyjump_two_chars', false)
     var ch = (easyjump_case ==? 'icase') ? getcharstr()->tolower() : getcharstr()
     GatherLocations(ch, two_chars_mode)
+    if locations->empty()
+        return
+    endif
     var ngroups = GroupCount()
     var group = 0
     try
@@ -202,7 +206,7 @@ export def Jump(two_chars: bool = false)
             if labels->stridx(ch) != -1
                 JumpTo(ch, group)
                 return
-            elseif ch == ';' || ch == ',' || ch == "\<tab>"  # switch to single char mode
+            elseif [';', ',', "\<tab>", "\<s-tab>"]->index(ch) != -1 # switch to 1-char mode
                 labels = letters->copy()
                 ngroups = GroupCount()
                 if ngroups == 1
@@ -217,9 +221,13 @@ export def Jump(two_chars: bool = false)
             endif
         endif
         while true
-            if ch == ';' || ch == ',' || ch == "\<tab>"
+            if [';', ',', "\<tab>", "\<s-tab>"]->index(ch) != -1
                 if ngroups > 1
-                    group = (group + 1) % ngroups
+                    if ch == ';' || ch == "\<tab>"
+                        group = (group + 1) % ngroups
+                    else
+                        group = (group + ngroups - 1) % ngroups
+                    endif
                     ShowLocations(group)
                 endif
             else

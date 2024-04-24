@@ -4,9 +4,10 @@ Jump to any location on screen by typing two characters.
 
 ## TL;DR
 
-- `s` + _character_ + _tag_character_ to jump
-- `ds` + _character_ + _tag_character_ to delete (similarly, `v` for visual selection, `c` for change, etc.)
-- `<tab>` or `;` or `,` after _character_ to view additional tag characters
+- `s` + _<character>_ + _<tag_character>_ to jump
+- `ds` + _<character>_ + _<tag_character>_ to delete (similarly, `v` for visual selection, `c` for change, etc.)
+- `<Tab>` and `<S-Tab>` (or `;` and `,`) after _<character>_ to view additional tag characters
+- `2s` + _<character_1>_ + _<character_2>_ + _<tag_character>_ to jump _(new)_
 
 ## Features
 
@@ -41,16 +42,16 @@ Pictures above are based on `:colorscheme quiet`.
 🔎 **What if the intended jump location is not showing a tag letter?**
 
 This scenario occurs when there aren't enough unique letters available for
-tagging. Simply type `<Tab>` (or `,`, or `;`), and you'll see new tag letters
-populate the remaining locations.
+tagging. Simply press `<Tab>` (or `;`), and new tag labels will fill the
+remaining spots. To cycle backwards, press `<S-Tab>` (or `,`).
 
 🚀 **Two-Character Mode (New)**: Activated with `2s` or simply `s` if `g:easyjump_two_chars` is configured as `true`.
 
-- Use `2s` + _character_ + _tag_character_ to leap to your destination (when a tag character marks the spot).
-- If no tag is present, type the adjacent character as well, forming `2s` + _character1_ + _character2_ + _tag_character_ to execute the jump.
+- Use `2s` + _<character>_ + _<tag_character>_ to leap to your destination (when a tag character marks the spot).
+- If no tag label is present, type the adjacent character as well, forming `2s` + _<character_1>_ + _<character_2>_ + _<tag_character>_ to execute the jump.
 
 > [!TIP]
-> A lazy way to navigate is by leveraging the space character as a guide. Experiment with typing `s` followed by `<space>`. This method aims to allocate one label per line. Once you're near your desired location within a line, you can [effectively employ](https://github.com/girishji/fFtT.vim) Vim's built-in `f/F, t/T` commands to reach it precisely. While using relative line numbers is an option (even without a plugin), this approach minimizes cognitive effort.
+> A lazy way to navigate is by leveraging the space character as a guide. Experiment with typing `s` followed by `<space>`. The algorithm strives to allocate one label per line. Once you're near your desired location within a line, you can [effectively employ](https://github.com/girishji/fFtT.vim) Vim's built-in `f/F, t/T` commands to reach it precisely. This is an alternative to using relative line numbers to jump.
 
 # Requirements
 
