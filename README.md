@@ -4,10 +4,10 @@ Jump to any location on screen by typing two characters.
 
 ## TL;DR
 
-- `s` + _<character>_ + _<tag_character>_ to jump
-- `ds` + _<character>_ + _<tag_character>_ to delete (similarly, `v` for visual selection, `c` for change, etc.)
-- `<Tab>` and `<S-Tab>` (or `;` and `,`) after _<character>_ to view additional tag characters
-- `2s` + _<character_1>_ + _<character_2>_ + _<tag_character>_ to jump _(new)_
+- `s` + _\<character>_ + _\<tag_character>_ to jump
+- `ds` + _\<character>_ + _\<tag_character>_ to delete (similarly, `v` for visual selection, `c` for change, etc.)
+- `<Tab>` and `<S-Tab>` (or `;` and `,`) after _\<character>_ to view additional tag characters
+- `2s` + _\<character_1>_ + _\<character_2>_ + _\<tag_character>_ to jump _(new)_
 
 ## Features
 
@@ -47,8 +47,8 @@ remaining spots. To cycle backwards, press `<S-Tab>` (or `,`).
 
 🚀 **Two-Character Mode (New)**: Activated with `2s` or simply `s` if `g:easyjump_two_chars` is configured as `true`.
 
-- Use `2s` + _<character>_ + _<tag_character>_ to leap to your destination (when a tag character marks the spot).
-- If no tag label is present, type the adjacent character as well, forming `2s` + _<character_1>_ + _<character_2>_ + _<tag_character>_ to execute the jump.
+- Use `2s` + _\<character>_ + _\<tag_character>_ to leap to your destination (when a tag character marks the spot).
+- If no tag label is present, type the adjacent character as well, forming `2s` + _\<character_1>_ + _\<character_2>_ + _\<tag_character>_ to execute the jump.
 
 > [!TIP]
 > A lazy way to navigate is by leveraging the space character as a guide. Experiment with typing `s` followed by `<space>`. The algorithm strives to allocate one label per line. Once you're near your desired location within a line, you can [effectively employ](https://github.com/girishji/fFtT.vim) Vim's built-in `f/F, t/T` commands to reach it precisely. This is an alternative to using relative line numbers to jump.
