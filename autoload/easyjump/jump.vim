@@ -135,35 +135,53 @@ enddef
 # NOTE: column number (byte based) is different from screen column when tab or
 # utf-8 chars are present. chars like ぬ, і, etc. are 3-byte and double wide.
 # popup_create() expects screen column while what we have is byte column. Use
-# screenpos() with synconcealed(), or wincol().
+# screenpos() with synconcealed(), or wincol() which requires :redraw and is slow.
 # Vim bug: https://github.com/vim/vim/issues/14640
+
+def ScreenPos(lnum: number, col: number): list<number>
+    var is_invisible = {row: 0, col: 0, endcol: 0, curscol: 0}
+    var scrpos = win_getid()->screenpos(lnum, col)
+    if scrpos != is_invisible
+        # screenpos has no knowledge of concealed or substituted chars
+        var concealed_len = 0
+        var idx = 1
+        while idx < col
+            var status = synconcealed(lnum, idx)
+            if status[0] == 1  # concealed
+                var spos = win_getid()->screenpos(lnum, idx)
+                var clen = spos.endcol - spos.col + 1
+                if status[1] != null_string  # substitute char present
+                    echom status[1]
+                    # Vim does not allow/show <tab> as substitute char
+                    # utf-8 chars are either 1 cell or 2 cell wide
+                    clen -= status[1]->strwidth()  # display width in cells
+                endif
+                concealed_len += clen
+                var line = getline(lnum)
+                idx += line->strcharpart(line->charidx(idx - 1), 1)->len()  # skip by byte width of char
+            else
+                idx += 1
+            endif
+        endwhile
+        return [scrpos.row, scrpos.col - concealed_len]
+    endif
+    return [-1, -1]
+enddef
 
 def ShowLocations(group: number)
     var curpos_saved: list<number> = []
     var scrolloff: number
     try
         popup_clear()
-        scrolloff = &l:scrolloff  # -1 if this local var is not set. global var defaults to 0
-        :setlocal scrolloff=0  # to prevent text from jumping inside the window after cursor()
-        curpos_saved = getcurpos()
         var ntags = labels->len()
-        var is_invisible = {row: 0, col: 0, endcol: 0, curscol: 0}
         for idx in range(min([ntags, locations->len() - group * ntags]))
             var [lnum, col] = locations[idx + group * ntags]
-            var scrpos = win_getid()->screenpos(lnum, col)
-            if scrpos != is_invisible && synconcealed(lnum, col)[0] == 0
-                cursor(lnum, col)
-                :redraw
-                ShowTag(labels[idx], scrpos.row, wincol())
+            var [scrlnum, scrcol] = ScreenPos(lnum, col)
+            if scrlnum != -1
+                ShowTag(labels[idx], scrlnum, scrcol)
             endif
         endfor
     finally
-        if !curpos_saved->empty()
-            cursor(curpos_saved->slice(1))
-        endif
-        if scrolloff != null
-            :exec $'setlocal scrolloff={scrolloff}'
-        endif
         :redraw
     endtry
 enddef
