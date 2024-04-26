@@ -136,7 +136,7 @@ enddef
 # utf-8 chars are present. chars like ぬ, і, etc. are 3-byte and double wide.
 # popup_create() expects screen column while what we have is byte column. Use
 # screenpos() with synconcealed(), or wincol() which requires :redraw and is slow.
-# Vim bug: https://github.com/vim/vim/issues/14640
+# Vim bugs: https://github.com/vim/vim/issues/14640 https://github.com/vim/vim/issues/14643
 
 def ScreenPos(lnum: number, col: number): list<number>
     var is_invisible = {row: 0, col: 0, endcol: 0, curscol: 0}
