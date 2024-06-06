@@ -1,3 +1,6 @@
+
+# Note: This plugin is now part of [VimBits suite](https://github.com/girishji/vimbits).
+
 # EasyJump.vim
 
 Jump to any location on screen by typing two characters.
